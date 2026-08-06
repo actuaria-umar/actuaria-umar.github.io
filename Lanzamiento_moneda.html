@@ -56,7 +56,7 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      height: 340px;
+      height: 455px;
       margin: 20px 0;
       perspective: 1000px;
       overflow: hidden;
@@ -68,8 +68,8 @@
     */
     .contenedor-salto {
       position: relative;
-      width: 145px;
-      height: 145px;
+      width: 125px;
+      height: 125px;
       transform: translateY(-25px);
       will-change: transform;
     }
@@ -164,8 +164,8 @@
     .sombra-moneda {
       position: absolute;
       bottom: 12px;
-      width: 125px;
-      height: 22px;
+      width: 108px;
+      height: 20px;
       border-radius: 50%;
       background-color: rgba(0, 0, 0, 0.22);
       filter: blur(5px);
@@ -264,6 +264,147 @@
       opacity: 0.55;
     }
 
+
+    /* =====================================================
+       RESULTADO EN PANTALLA COMPLETA
+       ===================================================== */
+
+    #fuegos-artificiales {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .resultado-pantalla-completa {
+      position: fixed;
+      inset: 0;
+      z-index: 950;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(20px, 5vw, 70px);
+      overflow: hidden;
+      color: #1f2937;
+    }
+
+    .resultado-pantalla-completa[hidden] {
+      display: none;
+    }
+
+    /*
+      Se conservan los mismos colores que en los mensajes
+      mostrados debajo de la moneda.
+    */
+    .resultado-pantalla-completa.aguila {
+      border: 3px solid #e5c15a;
+      background:
+        radial-gradient(
+          circle at top,
+          #ffffff 0%,
+          #fff9e7 68%,
+          #f5e6ae 100%
+        );
+      color: #8a5900;
+    }
+
+    .resultado-pantalla-completa.sol {
+      border: 3px solid #d5d9df;
+      background:
+        radial-gradient(
+          circle at top,
+          #ffffff 0%,
+          #f4f5f7 68%,
+          #dde1e6 100%
+        );
+      color: #4b5563;
+    }
+
+    .resultado-pantalla-contenido {
+      width: min(100%, 1100px);
+      text-align: center;
+      color: inherit;
+      animation:
+        entrada-pantalla-completa 700ms
+        cubic-bezier(0.18, 0.82, 0.28, 1.18);
+    }
+
+    .resultado-pantalla-icono {
+      display: block;
+      margin-bottom: clamp(10px, 2vh, 22px);
+      font-size: clamp(7rem, 24vw, 16rem);
+      line-height: 1;
+      filter:
+        drop-shadow(0 7px 7px rgba(0, 0, 0, 0.16));
+    }
+
+    .resultado-pantalla-titulo {
+      display: block;
+      font-size: clamp(3rem, 9vw, 7rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.035em;
+      color: inherit;
+      text-shadow:
+        0 4px 12px rgba(255, 255, 255, 0.75);
+    }
+
+    .resultado-pantalla-texto {
+      display: block;
+      max-width: 950px;
+      margin: clamp(18px, 4vh, 36px) auto 0;
+      font-size: clamp(1.35rem, 4vw, 2.7rem);
+      line-height: 1.35;
+      font-weight: 700;
+      color: inherit;
+    }
+
+    .resultado-pantalla-aviso {
+      position: absolute;
+      right: 0;
+      bottom: clamp(14px, 3vh, 28px);
+      left: 0;
+      padding: 0 20px;
+      color: inherit;
+      font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+      text-align: center;
+      opacity: 0.68;
+    }
+
+    .resultado-pantalla-completa.saliendo {
+      animation:
+        salida-pantalla-completa 420ms ease forwards;
+    }
+
+    @keyframes entrada-pantalla-completa {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-2deg);
+      }
+
+      65% {
+        opacity: 1;
+        transform: scale(1.055) rotate(1deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes salida-pantalla-completa {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
     /* =====================================================
        DISEÑO RESPONSIVO
        ===================================================== */
@@ -275,20 +416,20 @@
       }
 
       .escenario-moneda {
-        height: 315px;
+        height: 440px;
       }
 
       .contenedor-salto {
-        width: 125px;
-        height: 125px;
+        width: 110px;
+        height: 110px;
       }
 
       .simbolo-moneda {
-        font-size: 40px;
+        font-size: 36px;
       }
 
       .texto-moneda {
-        font-size: 15px;
+        font-size: 14px;
       }
 
       .mensaje-principal {
@@ -314,21 +455,30 @@
 
 <body>
 
+  <canvas
+    id="fuegos-artificiales"
+    aria-hidden="true">
+  </canvas>
+
+  <section
+    id="resultado-pantalla-completa"
+    class="resultado-pantalla-completa"
+    role="status"
+    aria-live="assertive"
+    aria-atomic="true"
+    hidden
+  >
+    <div
+      id="resultado-pantalla-contenido"
+      class="resultado-pantalla-contenido">
+    </div>
+
+  
+  </section>
+
   <section id="simulador-moneda">
 
     <h2>El dilema del riesgo</h2>
-
-    <div class="instruccion-dinamica">
-      Tienes <strong>$10,000 pesos seguros</strong>.
-      Puedes conservarlos o arriesgarte en un volado:
-      <strong>Águila</strong> te hace ganar $30,000 y
-      <strong>Sol</strong> te hace perderlo todo.
-    </div>
-
-    <p>
-      Quienes prefieran conservar los $10,000 pueden sentarse.
-      Quienes acepten el riesgo deben permanecer de pie.
-    </p>
 
     <div class="escenario-moneda">
 
@@ -402,6 +552,22 @@
       const botonLanzar = document.getElementById("boton-lanzar");
       const botonReiniciar = document.getElementById("boton-reiniciar");
 
+      const pantallaCompleta =
+        document.getElementById(
+          "resultado-pantalla-completa"
+        );
+
+      const pantallaCompletaContenido =
+        document.getElementById(
+          "resultado-pantalla-contenido"
+        );
+
+      const canvasFuegos =
+        document.getElementById("fuegos-artificiales");
+
+      const contextoFuegos =
+        canvasFuegos.getContext("2d");
+
       /*
        * Ángulo actual de la moneda:
        *
@@ -427,7 +593,7 @@
        * Altura máxima del lanzamiento, en píxeles.
        * Un valor mayor hace que la moneda suba más.
        */
-      const ALTURA_LANZAMIENTO = 300;
+      const ALTURA_LANZAMIENTO = 325;
 
       /*
        * Número de vueltas durante el lanzamiento.
@@ -435,6 +601,22 @@
        */
       const VUELTAS_MINIMAS = 7;
       const VUELTAS_MAXIMAS = 10;
+
+      /*
+       * Tiempo que el resultado permanece en pantalla completa.
+       */
+      const DURACION_PANTALLA_COMPLETA = 5000;
+
+      /*
+       * Retardo entre el final del lanzamiento y la aparición
+       * del resultado en pantalla completa.
+       */
+      const RETARDO_RESULTADO_PANTALLA = 150;
+
+      let temporizadorPantallaCompleta = null;
+      let particulasFuegos = [];
+      let animacionFuegos = null;
+      let tiempoFinalFuegos = 0;
 
       /**
        * Coloca un mensaje principal y otro complementario.
@@ -449,6 +631,261 @@
           <span class="mensaje-principal">${principal}</span>
           <span class="mensaje-secundario">${secundario}</span>
         `;
+      }
+
+      function ajustarCanvasFuegos() {
+        const proporcion = Math.max(
+          1,
+          Math.min(window.devicePixelRatio || 1, 2)
+        );
+
+        canvasFuegos.width =
+          Math.floor(window.innerWidth * proporcion);
+
+        canvasFuegos.height =
+          Math.floor(window.innerHeight * proporcion);
+
+        canvasFuegos.style.width =
+          `${window.innerWidth}px`;
+
+        canvasFuegos.style.height =
+          `${window.innerHeight}px`;
+
+        contextoFuegos.setTransform(
+          proporcion,
+          0,
+          0,
+          proporcion,
+          0,
+          0
+        );
+      }
+
+      function crearExplosion(x, y, tipo) {
+        const coloresAguila = [
+          "#ffd166",
+          "#f4a261",
+          "#e9c46a",
+          "#ffffff",
+          "#d99a13"
+        ];
+
+        const coloresSol = [
+          "#ffffff",
+          "#d5d9df",
+          "#9aa3ad",
+          "#f1f3f5",
+          "#b8c0ca"
+        ];
+
+        const colores =
+          tipo === "aguila"
+            ? coloresAguila
+            : coloresSol;
+
+        const cantidad =
+          tipo === "aguila" ? 38 : 27;
+
+        for (let i = 0; i < cantidad; i++) {
+          const angulo =
+            (Math.PI * 2 * i) / cantidad +
+            Math.random() * 0.18;
+
+          const velocidad =
+            (2.2 + Math.random() * 4.4) *
+            (tipo === "aguila" ? 1.1 : 0.85);
+
+          particulasFuegos.push({
+            x,
+            y,
+            anteriorX: x,
+            anteriorY: y,
+            vx: Math.cos(angulo) * velocidad,
+            vy: Math.sin(angulo) * velocidad,
+            gravedad: 0.055 + Math.random() * 0.04,
+            friccion: 0.982,
+            vida: 1,
+            desgaste: 0.011 + Math.random() * 0.01,
+            tamano: 1.4 + Math.random() * 2.1,
+            color:
+              colores[
+                Math.floor(Math.random() * colores.length)
+              ]
+          });
+        }
+      }
+
+      function dibujarFuegos() {
+        contextoFuegos.clearRect(
+          0,
+          0,
+          window.innerWidth,
+          window.innerHeight
+        );
+
+        contextoFuegos.globalCompositeOperation =
+          "lighter";
+
+        particulasFuegos = particulasFuegos.filter(
+          particula => particula.vida > 0
+        );
+
+        particulasFuegos.forEach(particula => {
+          particula.anteriorX = particula.x;
+          particula.anteriorY = particula.y;
+
+          particula.vx *= particula.friccion;
+          particula.vy *= particula.friccion;
+          particula.vy += particula.gravedad;
+
+          particula.x += particula.vx;
+          particula.y += particula.vy;
+          particula.vida -= particula.desgaste;
+
+          contextoFuegos.beginPath();
+          contextoFuegos.moveTo(
+            particula.anteriorX,
+            particula.anteriorY
+          );
+          contextoFuegos.lineTo(
+            particula.x,
+            particula.y
+          );
+
+          contextoFuegos.lineWidth =
+            particula.tamano;
+
+          contextoFuegos.strokeStyle =
+            particula.color;
+
+          contextoFuegos.globalAlpha =
+            Math.max(particula.vida, 0);
+
+          contextoFuegos.stroke();
+        });
+
+        contextoFuegos.globalAlpha = 1;
+        contextoFuegos.globalCompositeOperation =
+          "source-over";
+
+        if (
+          particulasFuegos.length > 0 ||
+          performance.now() < tiempoFinalFuegos
+        ) {
+          animacionFuegos =
+            requestAnimationFrame(dibujarFuegos);
+        } else {
+          animacionFuegos = null;
+
+          contextoFuegos.clearRect(
+            0,
+            0,
+            window.innerWidth,
+            window.innerHeight
+          );
+        }
+      }
+
+      function lanzarFuegosArtificiales(tipo) {
+        if (
+          window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+          ).matches
+        ) {
+          return;
+        }
+
+        ajustarCanvasFuegos();
+
+        if (animacionFuegos !== null) {
+          cancelAnimationFrame(animacionFuegos);
+        }
+
+        particulasFuegos = [];
+
+        tiempoFinalFuegos =
+          performance.now() +
+          (tipo === "aguila" ? 3200 : 2200);
+
+        const explosiones =
+          tipo === "aguila" ? 9 : 5;
+
+        for (let i = 0; i < explosiones; i++) {
+          window.setTimeout(() => {
+            const margenX =
+              window.innerWidth * 0.12;
+
+            const x =
+              margenX +
+              Math.random() *
+                (window.innerWidth - 2 * margenX);
+
+            const y =
+              window.innerHeight * 0.12 +
+              Math.random() *
+                (window.innerHeight * 0.48);
+
+            crearExplosion(x, y, tipo);
+          }, i * 270);
+        }
+
+        animacionFuegos =
+          requestAnimationFrame(dibujarFuegos);
+      }
+
+      function ocultarResultadoPantallaCompleta() {
+        if (pantallaCompleta.hidden) {
+          return;
+        }
+
+        pantallaCompleta.classList.add("saliendo");
+
+        window.setTimeout(() => {
+          pantallaCompleta.hidden = true;
+          pantallaCompleta.className =
+            "resultado-pantalla-completa";
+
+          pantallaCompletaContenido.innerHTML = "";
+          document.body.style.overflow = "";
+        }, 420);
+      }
+
+      function mostrarResultadoPantallaCompleta(tipo) {
+        if (temporizadorPantallaCompleta !== null) {
+          window.clearTimeout(
+            temporizadorPantallaCompleta
+          );
+        }
+
+        pantallaCompleta.className =
+          `resultado-pantalla-completa ${tipo}`;
+
+        if (tipo === "aguila") {
+          pantallaCompletaContenido.innerHTML =
+            `<span class="resultado-pantalla-icono" ` +
+            `aria-hidden="true">😎</span>` +
+            `<strong class="resultado-pantalla-titulo">` +
+            `¡ÁGUILA! Ganaron $30,000</strong>`
+        } else {
+          pantallaCompletaContenido.innerHTML =
+            `<span class="resultado-pantalla-icono" ` +
+            `aria-hidden="true">😭</span>` +
+            `<strong class="resultado-pantalla-titulo">` +
+            `¡SOL! Lo perdieron todo</strong>` 
+        }
+
+        document.body.style.overflow = "hidden";
+        pantallaCompleta.hidden = false;
+
+        void pantallaCompletaContenido.offsetWidth;
+
+        lanzarFuegosArtificiales(tipo);
+
+        temporizadorPantallaCompleta =
+          window.setTimeout(() => {
+            ocultarResultadoPantallaCompleta();
+            temporizadorPantallaCompleta = null;
+          }, DURACION_PANTALLA_COMPLETA);
       }
 
       /**
@@ -505,7 +942,7 @@
 
         mostrarMensaje(
           "¡La decisión está tomada!",
-          "La moneda está en el aire... ¿será premiado el riesgo?"
+          "La moneda está en el aire..."
         );
 
         const resultadoLanzamiento = generarResultadoJusto();
@@ -668,6 +1105,12 @@
             "aria-label",
             "Moneda mostrando Águila"
           );
+
+          window.setTimeout(() => {
+            mostrarResultadoPantallaCompleta(
+              "aguila"
+            );
+          }, RETARDO_RESULTADO_PANTALLA);
         } else {
           mostrarMensaje(
             "¡SOL! Lo perdieron todo",
@@ -679,6 +1122,12 @@
             "aria-label",
             "Moneda mostrando Sol"
           );
+
+          window.setTimeout(() => {
+            mostrarResultadoPantallaCompleta(
+              "sol"
+            );
+          }, RETARDO_RESULTADO_PANTALLA);
         }
 
         lanzamientoEnCurso = false;
@@ -697,6 +1146,34 @@
         }
 
         anguloActual = 0;
+
+        if (temporizadorPantallaCompleta !== null) {
+          window.clearTimeout(
+            temporizadorPantallaCompleta
+          );
+          temporizadorPantallaCompleta = null;
+        }
+
+        pantallaCompleta.hidden = true;
+        pantallaCompleta.className =
+          "resultado-pantalla-completa";
+
+        pantallaCompletaContenido.innerHTML = "";
+        document.body.style.overflow = "";
+
+        if (animacionFuegos !== null) {
+          cancelAnimationFrame(animacionFuegos);
+          animacionFuegos = null;
+        }
+
+        particulasFuegos = [];
+
+        contextoFuegos.clearRect(
+          0,
+          0,
+          window.innerWidth,
+          window.innerHeight
+        );
 
         moneda.style.transform = "rotateY(0deg)";
 
@@ -719,6 +1196,54 @@
       botonReiniciar.addEventListener(
         "click",
         reiniciarSimulacion
+      );
+
+      pantallaCompleta.addEventListener(
+        "click",
+        () => {
+          if (temporizadorPantallaCompleta !== null) {
+            window.clearTimeout(
+              temporizadorPantallaCompleta
+            );
+            temporizadorPantallaCompleta = null;
+          }
+
+          ocultarResultadoPantallaCompleta();
+        }
+      );
+
+      document.addEventListener(
+        "keydown",
+        evento => {
+          if (
+            evento.key === "Escape" &&
+            !pantallaCompleta.hidden
+          ) {
+            if (
+              temporizadorPantallaCompleta !== null
+            ) {
+              window.clearTimeout(
+                temporizadorPantallaCompleta
+              );
+
+              temporizadorPantallaCompleta = null;
+            }
+
+            ocultarResultadoPantallaCompleta();
+          }
+        }
+      );
+
+      window.addEventListener(
+        "resize",
+        () => {
+          if (
+            particulasFuegos.length > 0 ||
+            animacionFuegos !== null
+          ) {
+            ajustarCanvasFuegos();
+          }
+        }
       );
     })();
   </script>
