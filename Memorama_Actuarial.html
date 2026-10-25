@@ -606,6 +606,31 @@
     body.playing .card-back { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: clamp(3px, .8vh, 9px); }
     body.playing .card-back .mark { flex: 0 1 auto; height: 62%; max-height: calc(100% - 30px); min-height: 0; }
     body.playing .card-back .mini { position: static; display: block; flex: 0 0 auto; color: #fff; opacity: 1; font-weight: 800; line-height: 1.2; font-size: clamp(.6rem, 1.2vw, .95rem); letter-spacing: .12em; }
+    /* Pantalla inicial contenida en la ventana, también al redimensionarla. */
+    body:not(.playing) { height: 100dvh; min-height: 0; overflow: hidden; }
+    body:not(.playing) .app {
+      width: min(1180px, 100%); height: 100dvh; margin: 0 auto;
+      padding: clamp(6px, 2vh, 18px); box-sizing: border-box;
+      display: grid; grid-template-rows: minmax(0, 1fr) auto auto;
+    }
+    body:not(.playing) .career-identity { min-height: 0; padding: 0; align-items: center; overflow: hidden; }
+    body:not(.playing) .career-logo { width: auto; height: auto; max-width: min(420px, 80vw); max-height: 100%; object-fit: contain; }
+    body:not(.playing) .hero { display: block; padding: clamp(8px, 2vh, 22px); }
+    body:not(.playing) .hero h1 { font-size: clamp(1.35rem, 5vmin, 3.5rem); }
+    body:not(.playing) .difficulty-screen { margin-top: clamp(5px, 1.5vh, 16px); padding: clamp(8px, 2vh, 24px); }
+    body:not(.playing) .difficulty-screen h2 { margin: 0 0 clamp(6px, 1.5vh, 18px); font-size: clamp(1rem, 3vmin, 1.5rem); }
+    body:not(.playing) .difficulty-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(5px, 1vw, 14px); }
+    body:not(.playing) .difficulty-options .btn { min-width: 0; min-height: 0; padding: clamp(8px, 2vh, 16px) 6px; font-size: clamp(.75rem, 2vmin, 1rem); }
+    @media (max-width: 600px) {
+      body:not(.playing) .difficulty-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-height: 360px) and (min-width: 601px) {
+      body:not(.playing) .app { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); grid-template-rows: auto minmax(0, 1fr); gap: 6px; }
+      body:not(.playing) .career-identity { grid-row: 1 / 3; }
+      body:not(.playing) .career-logo { max-width: 100%; }
+      body:not(.playing) .hero { border-radius: 18px; }
+      body:not(.playing) .difficulty-screen { margin: 0; align-self: center; }
+    }
   </style>
 </head>
 <body>
