@@ -1,0 +1,9 @@
+SEGURO LLEGAS - TABLEROS DE DIEZ CASILLAS POR FILA
+
+Imprime a una cara, A4 horizontal, tamaño real (100 %), sin ajustar a página.
+Cada hoja tiene cinco casillas por fila, de 54 x 54 mm.
+Recorta los márgenes por el marco gris. Une la hoja IZQUIERDA y la DERECHA de la misma franja por sus bordes cortos, sin superponer casillas.
+Primera fila: 1 2 3 4 5 | 6 7 8 9 10. Segunda: 11 12 13 14 15 | 16 17 18 19 20.
+Coloca las franjas completas una debajo de otra, por orden. Las franjas finales pueden tener menos de tres filas.
+Tableros: 20 casillas = 2 hojas; 40 = 4; 60 = 4; 100 = 8.
+Se conservan los tipos de casilla de la versión anterior. Solo se modificaron la distribución en las páginas y el tamaño de impresión.
